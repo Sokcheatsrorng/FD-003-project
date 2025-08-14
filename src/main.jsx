@@ -11,6 +11,7 @@ import Login from "./pages/auth/Login.jsx";
 import RootLayout from "./components/layouts/root-layout.jsx";
 import Register2 from "./pages/auth/Register2.jsx";
 import { HelmetProvider } from "react-helmet-async";
+import { ErrorBoundary, NotFound } from "./ErrorBoundary.jsx";
 
 const helmetContext = {}
 
@@ -18,17 +19,22 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <HelmetProvider context={helmetContext}>
-         <BrowserRouter>
-        <Routes>
-          <Route element={<RootLayout />}>
-            <Route path="/" element={<App />} />
-            <Route path="/products" element={<Product />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
-          </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register2/>} />
-        </Routes>
-      </BrowserRouter>
+        <ErrorBoundary>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<RootLayout />}>
+                <Route path="/" element={<App />} />
+                <Route path="/products" element={<Product />} />
+                <Route path="/products/:id" element={<ProductDetail />} />
+
+              </Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register2 />} />
+              {/* not found */}
+              <Route path='*' exact={true} element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </ErrorBoundary>
       </HelmetProvider>
     </Provider>
   </StrictMode>

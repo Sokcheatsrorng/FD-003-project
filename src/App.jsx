@@ -3,6 +3,8 @@ import { useGetProductsQuery } from "./features/product/productSlice2";
 import CardProduct from "./components/card/card-product";
 import SkeletonCardProduct from "./components/card/skeleton-card-product";
 import SEO from "./components/seo/SEOComponent";
+import { Suspense } from "react";
+import LoadingComponent from "./loading";
 
 function App() {
   const { data, isLoading } = useGetProductsQuery({
@@ -27,7 +29,8 @@ function App() {
           {isLoading &&
             array.map((index) => <SkeletonCardProduct key={index} />)}
           {/* product section */}
-          {!isLoading &&
+          <Suspense fallback={<LoadingComponent/>}>
+             {!isLoading &&
             data?.content.map((p, index) => (
               <CardProduct
                 key={index}
@@ -36,6 +39,9 @@ function App() {
                 id={p.uuid}
               />
             ))}
+
+          </Suspense>
+         
         </section>
       </main>
     </div>
